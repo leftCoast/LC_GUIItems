@@ -33,21 +33,24 @@ void colorRect::setInset(int inset) {
 
 void colorRect::drawSelf(void) {
 
-  colorObj  insetTLColor;
-  colorObj  insetBRColor;
-  int       j;
+	colorObj  insetTLColor;
+	colorObj  insetBRColor;
   
-  screen->fillRect(x, y, width, height, (colorObj*)this);
-  if (mInset) {
-    insetTLColor = mixColors(&black,50);
-    insetBRColor = mixColors(&white,50);
-    j = 1;
-    for (int i=0;i<mInset;i++) {
-      screen->drawVLine(x+i,y+i,height-j,&insetTLColor);
-      screen->drawHLine(x+i,y+i,width-j,&insetTLColor);
-      screen->drawVLine(x+width-i,y+j,height-j,&insetBRColor);
-      screen->drawHLine(x+j,y+height-i,width-j,&insetBRColor);
-      j++;
+	screen->fillRect(x, y, width, height, (colorObj*)this);
+	if (mInset) {
+		if (mInset>0) {
+    		insetTLColor = mixColors(&black,50);
+    		insetBRColor = mixColors(&white,50);
+    	} else {
+    		insetTLColor = mixColors(&white,50);
+    		insetBRColor = mixColors(&black,50);
+    	}
+
+    for (int i=0;i<abs(mInset);i++) {
+      screen->drawVLine(x+i,y+i,height-2*i,&insetTLColor);
+      screen->drawHLine(x+i,y+i,width-2*i,&insetTLColor);
+      screen->drawVLine(x+width-i,y+i,height-i,&insetBRColor);
+      screen->drawHLine(x+i,y+height-i,width-i,&insetBRColor);
     }
   }
 }

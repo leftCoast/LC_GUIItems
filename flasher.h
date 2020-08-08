@@ -23,10 +23,12 @@ class flasher :	public drawObj,
 						public squareWave {
 
 	public:
-				flasher(rect* inRect,colorObj* backColor=&black);
-				flasher(int inLocX,int inLocY,int inWidth,int inHeight,colorObj* backColor=&black);
+				flasher(rect* inRect,colorObj* offColor=&black,colorObj* onColor=&red);
+				flasher(int inLocX,int inLocY,int inWidth,int inHeight,colorObj* offColor=&black,colorObj* onColor=&red);
 					
 	virtual	~flasher(void);
+	
+	virtual	void	setColors(colorObj* onColor,colorObj* offColor);
 	virtual	void	drawSelf(void);
 	virtual	void	pulseOn(void);                                                   
 	virtual	void	pulseOff(void);

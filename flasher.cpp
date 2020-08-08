@@ -9,31 +9,37 @@
 // *****************************************************
 
 
-flasher::flasher(rect* inRect,colorObj* backColor)
+flasher::flasher(rect* inRect,colorObj* onColor,colorObj* offColor)
   : drawObj(inRect), 
   squareWave() {
 
 	mFlash = false;						// State of the flash, light on or light off.
 	setPeriod(DEF_FLASH_PERIOD);		// Setup default period.
 	setPulse(DEF_FLASH_PULSE);			// Setup default pulse.
-	mBackColor.setColor(backColor);	// What is "off"?
-	mForeColor.setColor(&red);			// Reasonable default.
+	setColors(onColor,offColor);		// Setup the colors.
 }
 
 
-flasher::flasher(int inX,int inY,int inWidth,int inHeight,colorObj* backColor)
+flasher::flasher(int inX,int inY,int inWidth,int inHeight,colorObj* onColor,colorObj* offColor)
   : drawObj(inX,inY,inWidth,inHeight), 
   squareWave() {
   
 	mFlash = false;						// State of the flash, light on or light off.
 	setPeriod(DEF_FLASH_PERIOD);		// Setup default period.
 	setPulse(DEF_FLASH_PULSE);			// Setup default pulse.
-	mBackColor.setColor(backColor);	// What is "off"?
-	mForeColor.setColor(&red);			// Reasonable default.
+	setColors(onColor,offColor);		// Setup the colors.
 }
 
                      
 flasher::~flasher(void) { }
+
+
+void flasher::setColors(colorObj* onColor,colorObj* offColor) {
+
+	if (onColor) mForeColor.setColor(onColor);	// What is "on"?
+	if (offColor) mBackColor.setColor(offColor);	// What is "off"?
+	setNeedRefresh();
+}
 
 
 // What to do when pulse goes high.
