@@ -1,9 +1,9 @@
 #ifndef iconButton_h
 #define iconButton_h
 
-#include <drawObj.h>
-#include <bmpPipe.h>
-
+//#include <drawObj.h>
+//#include <bmpPipe.h>
+#include <bmpObj.h>
 
 // Make a button with a 32x32 pixel icon stored in a .bmp file.
 // Seeing its expecting a 32x32 pixel file we can simplify a bunch.
@@ -18,18 +18,13 @@
 
 
 
-class iconButton :	public drawObj,
-							public bmpPipe {
+class iconButton :	public bmpObj {
 
 	public:
 				iconButton(int xLoc,int yLoc,char* path,int pix=32);
 	virtual	~iconButton(void);
 	
-				void	begin(void);
-	virtual	void	drawSelf(void);
 	virtual	void	doAction(void);
-	
-				char*	mPath;
 };
 
 // HAVE NOT TESTED THEESE YET!!!
