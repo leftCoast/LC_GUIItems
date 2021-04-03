@@ -1,12 +1,25 @@
 #include <iconButton.h>
+#include <resizeBuff.h>
+
 
 // Its a SQUARE icon. Used to be fixed at 32x32 but no..
 // Now we want different sizes, don't we?
+
+
 iconButton::iconButton(int xLoc,int yLoc,char* path,int pix)
-	: bmpObj(xLoc,yLoc,pix,pix,path) { setEventSet(touchLift); }
+	: bmpObj(xLoc,yLoc,pix,pix,path) {
+	
+	mIconBMap	= NULL;
+	setEventSet(touchLift);
+}
 	
 	
-iconButton::~iconButton(void) { }
+iconButton::~iconButton(void) {
+
+	if (mIconBMap) {
+		delete(mIconBMap);
+	}
+}
 
 
 void iconButton::doAction(void) {  }
