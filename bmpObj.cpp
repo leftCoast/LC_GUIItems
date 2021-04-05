@@ -22,35 +22,41 @@ bool mask::checkPixel(int x,int y) { return true; }
 bmpObj::bmpObj(int inX,int inY,int inWidth,int inHeight,char* bmpPath)
 	: drawObj(inX,inY,inWidth,inHeight) {
 	
-	mMask = NULL;	
-	mRowArray = NULL;
-	setSourceRect(0,0,inWidth,inHeight);			// Default source is top left of bitmap, our size.
-	mBMPObj = new bmpImage();
-	mPath = NULL;
-	if (bmpPath) {
-		resizeBuff(strlen(bmpPath)+1,&mPath);
-		strcpy(mPath,bmpPath);
+	mMask			= NULL;											// Start pointer at NULL, just in case.. But this one is actually a flag.
+	mRowArray	= NULL;											// NULL
+	mPath			= NULL;											// NULL NULL.
+	mBMPObj		= NULL;											// And NULL.
+	setSourceRect(0,0,inWidth,inHeight);					// Default source is top left of bitmap, our size. 
+	if (bmpPath) {													// If we got a bmpImage path..
+		if (resizeBuff(strlen(bmpPath)+1,&mPath)) {		// If we can get the RAM to store said path..
+			strcpy(mPath,bmpPath);								// Save the path for later.
+		}
 	}
 }
 
 		
 bmpObj::~bmpObj(void) {
 
-	if (mBMPObj) delete(mBMPObj);
-	resizeBuff(0,(void**)&mRowArray);
+	if (mBMPObj) delete(mBMPObj);			// If we got a mBMPObj, delete it.
+	resizeBuff(0,(void**)&mRowArray);	// Save to rall resizeBuff->0 on these.
+	resizeBuff(0,(void**)&mPath);			// CYA memory!
 }
 
 	
 // Some stuff must wait 'till our hardware is up and running. like SD cards.	
 bool bmpObj::begin(void) {
 
-	if (mBMPObj->openDocFile(mPath)) {	// If we can set it up as this image..
-		resizeBuff(0,&mPath);				// Then we can dump the copy of our path. Its in the bmpImage thing now.
-		return true;							// And we return success.
+	if (!mBMPObj && mPath) {							// If we don't have a bmpImage object. (Shouldn't) but DO have a path.. (Should)
+		mBMPObj	= new bmpImage();						// Create our bmpImage object. We'll use it to draw stuff.
+		if (mBMPObj) {										// If we had success in creating it.. (Should)
+			if (mBMPObj->openDocFile(mPath)) {		// If we can open and read an image from the path we saved..
+				resizeBuff(0,&mPath);					// Then we can dump the copy of our path. Its saved in the bmpImage thing now.
+				return true;								// And we return success.
+			}
+		}
 	}
-	return false;								// If we land here? Something went wrong.
+	return false;											// If we land here? Something went wrong.
 }
-
 
 
 // Setup the source rect for reading from the .bmp file.
@@ -76,11 +82,14 @@ void	bmpObj::drawSelf(void) {
 	filePath = mBMPObj->getDocFilePath();
 	bmpFile = SD.open(filePath,FILE_READ);
 	if (bmpFile) {
-		mBMPObj->setGFile(&bmpFile);
 		syMax = mSourceRect.y+mSourceRect.height;
 		localY = y;
 		for (int sourceY=mSourceRect.y;sourceY<syMax;sourceY++) {
-			mBMPObj->getRow(sourceY,mRowArray,mSourceRect.width,mSourceRect.x);
+			if (!sourceY) {
+				mBMPObj->getRow(0,mRowArray,mSourceRect.width,&bmpFile);
+			} else {
+				mBMPObj->getRow(-1,mRowArray,mSourceRect.width,&bmpFile);
+			}
 			if (mMask) {
 				for (int i=0;i<mSourceRect.width;i++) {
 					if (mMask->checkPixel(i,localY-y)) {
@@ -97,6 +106,5 @@ void	bmpObj::drawSelf(void) {
 			localY++;
 		}
 		bmpFile.close();
-		mBMPObj->setGFile(NULL);
 	}
 }
