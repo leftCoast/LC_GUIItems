@@ -72,6 +72,22 @@ void bmpObj::setSourceRect(int sX,int sY,int sWidth,int sHeight) {
 }
 
 
+// Set this as the image path we want.
+// NOTE: This is kinda' a hack for backwards compatibility. The old bmpObj had something
+// like this. For now? I'm going to leave this. But later I'll need to take account of
+// when this call fails and "Do the right thing".
+void bmpObj::setBmpPath(char* bmpPath) {
+
+	if (mBMPObj) {												// If we already have an image we're using..
+		mBMPObj->openDocFile(bmpPath);					// Tell the image object to switch to this path.
+	} else {
+		if (resizeBuff(strlen(bmpPath)+1,&mPath)) {	// If we can get the RAM to store said path..
+			strcpy(mPath,bmpPath);							// Save the path for later.
+		}
+	}
+}
+
+
 // Set a pointer to a mask object. You do NOT own this mask. You can only use it. So don't
 // go deleting it!
 void bmpObj::setMask(mask* aMaskPtr) { mMask = aMaskPtr; }

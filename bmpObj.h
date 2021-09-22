@@ -33,6 +33,7 @@ class bmpObj :	public drawObj {
 	virtual	bool	begin(void);		// Some stuff must wait 'till our hardware is up and running. like SD cards.
 				void	setSourceRect(int sX,int sY,int sWidth,int sHeight);
 				void	setMask(mask* aMaskPtr);
+				void	setBmpPath(char* bmpPath);
 	virtual	void	drawSelf(void);
 	
 				rect			mSourceRect;
