@@ -3,6 +3,8 @@
 
 #include <drawObj.h>
 #include <bmpImage.h>
+#include <bitmap.h>
+
 
 // Mask can be applied to a bmpObj to tell whether to write a pixel or not.
 class mask {
@@ -12,6 +14,27 @@ class mask {
 	virtual	~mask(void);
 	
 	virtual	bool	checkPixel(int x,int y);
+};
+
+
+
+class bmpMask :	public mask {
+
+	public:
+				bmpMask(void);
+	virtual	~bmpMask(void);
+	
+	virtual	void	readFromBMP(char* filePath);
+	virtual	bool	checkPixel(int x,int y);
+	
+	protected:	
+				long 	calcBuffSize(void);
+				void	writeBit(int x, int y,bool trueFalse);
+				bool	readBit(int x,int y);
+
+				byte*	maskBits;
+				int	width;
+				int	height;
 };
 
 

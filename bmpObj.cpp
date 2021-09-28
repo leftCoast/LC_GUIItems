@@ -15,6 +15,86 @@ bool mask::checkPixel(int x,int y) { return true; }
 
 
 // *************************************
+//     	A .bmp file mask class
+// *************************************
+
+
+bmpMask::bmpMask(void) { maskBits = NULL; }
+
+bmpMask::~bmpMask(void) { if (maskBits) resizeBuff(0,&maskBits); }
+
+	
+void	bmpMask::readFromBMP(char* filePath) {
+
+	bmpImage	alphaFile;
+	long		numBytes;
+	colorObj	thePixel;
+	byte		alpha;
+	
+	if (alphaFile.openDocFile(filePath)) {					// Ok, If we have a valid .bmp file..
+		width = alphaFile.getWidth();							// We read and save the width.
+		height = alphaFile.getHeight();						// We read and save the height.
+		numBytes = calcBuffSize();								// Calculate our buff size.
+		if (resizeBuff(numBytes,&maskBits)) {				// If we can allocate the bit buffer..
+			for (int y=0;y<height;y++) {						// For each row in the image..
+				for (int x=0;x<width;x++) {					// For each pixel in the row..
+					thePixel = alphaFile.getPixel(x,y);		// Grab the pixel.					
+					alpha = thePixel.getGreyscale();			// Calculate the brightness of the pixel.
+					writeBit(x,y,alpha<128);					// Set the bitmap bit accordingly.
+				}
+			}		
+		}
+	}
+}
+
+
+bool	bmpMask::checkPixel(int x,int y) { return readBit(x,y); }
+	
+
+long 	bmpMask::calcBuffSize(void) {
+	
+	int	rowBytes;
+	
+	rowBytes = width/8;				// Making a bit array, divide by 8.
+	if (width % 8) rowBytes++;		// Add one if there is a remainder.
+	return rowBytes * height;		// Return result;
+}
+
+	
+void	bmpMask::writeBit(int x, int y,bool trueFalse) {
+	
+	int	byteIndex;
+	byte	bitIndex;
+	
+	if (maskBits) {											// Sanity check. Is there a bit buffer?..
+		byteIndex = (y * width) + (x / 8);				// Offset into the byte buffer.
+		bitIndex = x % 8;										// Offset into the bit field.
+		if (trueFalse) {										// Lets see what the user wants..
+			bitSet(maskBits[byteIndex],bitIndex);		// If its true, set the bit.
+		} else {													// Else, ,ust be false..
+			bitClear(maskBits[byteIndex],bitIndex);	// Clear the bit.
+		}
+	}
+}
+
+
+bool	bmpMask::readBit(int x,int y) {
+	
+	int	byteIndex;
+	byte	bitIndex;
+	
+	if (maskBits) {												// If we have a mask buffer..
+		byteIndex = (y * width) + (x / 8);					// Calc the byte index.
+		bitIndex = x % 8;											// Calc the bit index.
+		return bitRead(maskBits[byteIndex],bitIndex);	// return the result.
+	} else {															// Else, we have no mask?..
+		return true;												// Whatever. No mask means draw it all.
+	}
+}
+
+
+	
+// *************************************
 //          The bmpObj class
 // *************************************
 
