@@ -59,15 +59,15 @@ long 	bmpMask::calcBuffSize(void) {
 	if (width % 8) rowBytes++;		// Add one if there is a remainder.
 	return rowBytes * height;		// Return result;
 }
-
 	
+
 void	bmpMask::writeBit(int x, int y,bool trueFalse) {
 	
 	int	byteIndex;
 	byte	bitIndex;
 	
 	if (maskBits) {											// Sanity check. Is there a bit buffer?..
-		byteIndex = (y * width) + (x / 8);				// Offset into the byte buffer.
+		byteIndex = ((y * width) + x) / 8;				// Offset into the byte buffer.
 		bitIndex = x % 8;										// Offset into the bit field.
 		if (trueFalse) {										// Lets see what the user wants..
 			bitSet(maskBits[byteIndex],bitIndex);		// If its true, set the bit.
@@ -84,7 +84,7 @@ bool	bmpMask::readBit(int x,int y) {
 	byte	bitIndex;
 	
 	if (maskBits) {												// If we have a mask buffer..
-		byteIndex = (y * width) + (x / 8);					// Calc the byte index.
+		byteIndex = ((y * width) + x) / 8;					// Calc the byte index.
 		bitIndex = x % 8;											// Calc the bit index.
 		return bitRead(maskBits[byteIndex],bitIndex);	// return the result.
 	} else {															// Else, we have no mask?..
