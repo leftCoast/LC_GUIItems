@@ -129,21 +129,31 @@ bmpObj::~bmpObj(void) {
 }
 
 	
-// Some stuff must wait 'till our hardware is up and running. like SD cards.	
-bool bmpObj::begin(void) {
+// Some stuff must wait 'till our hardware is up and running. like SD cards.
+// This is also your second chance to set the image file's path.
+bool bmpObj::begin(char* bmpPath) {
 
-	if (!mBMPObj && mPath) {							// If we don't have a bmpImage object. (Shouldn't) but DO have a path.. (Should)
-		mBMPObj	= new bmpImage();						// Create our bmpImage object. We'll use it to draw stuff.
-		if (mBMPObj) {										// If we had success in creating it.. (Should)
-			if (mBMPObj->openDocFile(mPath)) {		// If we can open and read an image from the path we saved..
-				resizeBuff(0,&mPath);					// Then we can dump the copy of our path. Its saved in the bmpImage thing now.
-				return true;								// And we return success.
+	
+	if (!mBMPObj) {											// No bmpImage? (Shouldn't have one)
+		mBMPObj	= new bmpImage();							// Create our bmpImage object. We'll use it to draw stuff.
+	}
+	if (mBMPObj) {												// If we were successful in creating one.
+		if (bmpPath) {											// If we were passed in a path..
+			resizeBuff(0,&mPath);							// If we have a saved path, dump it.
+			return mBMPObj->openDocFile(bmpPath);		// Return if we can open and read the image.
+		} else if (mPath) {									// Else if we have a saved path..
+			if (mBMPObj->openDocFile(mPath)) {			// If we can open and read the image..
+				resizeBuff(0,&mPath);						// Then we can dump our copy of the path.
+				return true;									// And we return success.
+			} else {												// Else we couldn't read the file..
+				return false;									// Something is wrong. Return false.
 			}
 		}
+		return true;											// We achieved what they asked for. Return true;
 	}
-	return false;											// If we land here? Something went wrong.
+	return false;												// Nothing but failure! Return false.
 }
-
+				
 
 // Setup the source rect for reading from the .bmp file.
 void bmpObj::setSourceRect(int sX,int sY,int sWidth,int sHeight) {
@@ -152,19 +162,13 @@ void bmpObj::setSourceRect(int sX,int sY,int sWidth,int sHeight) {
 }
 
 
-// Set this as the image path we want.
-// NOTE: This is kinda' a hack for backwards compatibility. The old bmpObj had something
-// like this. For now? I'm going to leave this. But later I'll need to take account of
-// when this call fails and "Do the right thing".
-void bmpObj::setBmpPath(char* bmpPath) {
+// Set the path after begin() has been called or change the path..
+bool bmpObj::setBmpPath(char* bmpPath) {
 
-	if (mBMPObj) {												// If we already have an image we're using..
-		mBMPObj->openDocFile(bmpPath);					// Tell the image object to switch to this path.
-	} else {
-		if (resizeBuff(strlen(bmpPath)+1,&mPath)) {	// If we can get the RAM to store said path..
-			strcpy(mPath,bmpPath);							// Save the path for later.
-		}
+	if (mBMPObj) {											// If we have the mBMPObj..
+		return mBMPObj->openDocFile(bmpPath);		// return if we can open this new path.
 	}
+	return false;											// No mBMPObj? Thi is messed up! Return false.
 }
 
 
