@@ -23,8 +23,6 @@ class iconButton :	public bmpObj {
 	virtual	~iconButton(void);
 	
 	virtual	void	doAction(void);
-	
-				bitmap*	mIconBMap;
 };
 
 

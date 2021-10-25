@@ -9,17 +9,11 @@
 iconButton::iconButton(int xLoc,int yLoc,char* path,int pix)
 	: bmpObj(xLoc,yLoc,pix,pix,path) {
 	
-	mIconBMap	= NULL;
 	setEventSet(touchLift);
 }
 	
 	
-iconButton::~iconButton(void) {
-
-	if (mIconBMap) {
-		delete(mIconBMap);
-	}
-}
+iconButton::~iconButton(void) { }
 
 
 void iconButton::doAction(void) {  }

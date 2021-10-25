@@ -4,18 +4,16 @@
 #include <drawObj.h>
 #include <bmpImage.h>
 #include <bitmap.h>
+#include <mask.h>
 
 
-// Mask can be applied to a bmpObj to tell whether to write a pixel or not.
-class mask {
-
-	public:
-				mask(void);
-	virtual	~mask(void);
-	
-	virtual	bool	checkPixel(int x,int y);
-};
-
+// This reads a .bmp file showing the silhouette of the shape you would like to draw. This
+// silhouette is read in as a greyscale image. GREY_CUTOFF is used to decide whether each
+// pixel is masked or drawn.
+//
+// Anything greater than this is NOT drawn. IE mask-white is for masking. Mask-black is for
+// drawing.
+#define GREY_CUTOFF	127
 
 
 class bmpMask :	public mask {
@@ -47,23 +45,20 @@ class bmpMask :	public mask {
 //
 // Basically this is the glue that hooks a .bmp filepath to a drawObj.
 
-class bmpObj :	public drawObj {
+class bmpObj :	public drawObj,
+					public bmpImage {
 
 	public:
-				bmpObj(int inX,int inY,int inwidth,int inHeight,char* bmpPath=NULL);
+				bmpObj(int inX,int inY,int inWidth,int inHeight,char* bmpPath);
 	virtual	~bmpObj(void);
 	
-	virtual	bool	begin(char* bmpPath=NULL);		// Some stuff must wait 'till our hardware is up and running. like SD cards.
-				void	setSourceRect(int sX,int sY,int sWidth,int sHeight);
+				void	setSourceOffset(int offstX,int offstY);
 				void	setMask(mask* aMaskPtr);
-				bool	setBmpPath(char* bmpPath);
 	virtual	void	drawSelf(void);
-	
-				rect			mSourceRect;
-				RGBpack*		mRowArray;
-				char*			mPath;
-				bmpImage*	mBMPObj;
-				mask*			mMask;
+				
+				int	offsetX;
+				int	offsetY;
+				mask*	mMask;
 };
 
 
