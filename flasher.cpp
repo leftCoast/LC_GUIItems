@@ -82,11 +82,11 @@ bmpFlasher::bmpFlasher(int inX,int inY, int width,int height,char* onBmp, char* 
 }
 
     
-bmpFlasher::bmpFlasher(rect* inRect,char* onBmp, char* offBmp)
+bmpFlasher::bmpFlasher(rect* inRect,char* onBmpPath, char* offBmpPath)
   : flasher(inRect,&black) { 
   
   mReady = false;
-  setup(onBmp,offBmp);
+  setup(onBmpPath,offBmpPath);
 }  
 
     
@@ -97,26 +97,23 @@ bmpFlasher::~bmpFlasher(void) {
 }
 
 
-void bmpFlasher::setup(char* onBmp,char* offBmp) {
+void bmpFlasher::setup(char* onBmpPath,char* offBmpPath) {
 
-  rect  sourceRect(0,0,width,height);
-  mOnBmp = new bmpPipe(&sourceRect);
-  mOffBmp = new bmpPipe(&sourceRect);
-  if (mOnBmp&&mOffBmp) {
-    if (mOnBmp->openPipe(onBmp) && mOffBmp->openPipe(offBmp)) {
-      mReady = true;
-    }
-  }
+  mOnBmp = new bmpObj(this,onBmpPath);
+  mOffBmp = new bmpObj(this,offBmpPath);
+  mReady = mOnBmp && mOffBmp;
 }
 
 
 void bmpFlasher::drawSelf(void) {
 
-  if (mReady) {
-    if (mFlash) {
-      mOnBmp->drawImage(x,y);
-    } else {
-      mOffBmp->drawImage(x,y);
+  if (mReady) {							// All ducks in row?
+    if (mFlash) {							// We want it on?
+    	mOnBmp->setLocation(x,y);		// Just in case. 
+      mOnBmp->draw();					// Do it.
+    } else {								// Or off?
+    	mOffBmp->setLocation(x,y);		// Just in case. 
+      mOffBmp->draw();					// Do it.
     }
   }
 }

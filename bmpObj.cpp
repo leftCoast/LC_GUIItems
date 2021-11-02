@@ -107,6 +107,16 @@ bmpObj::bmpObj(int inX,int inY,int inWidth,int inHeight,char* bmpPath)
 	offsetY	= 0;
 }
 
+
+bmpObj::bmpObj(rect* inRect,char* bmpPath)
+	: drawObj(inRect),
+	bmpImage(bmpPath) {
+	
+	mMask		= NULL;		// No mask yet.
+	offsetX	= 0;			// No offset. Typically there will be none.
+	offsetY	= 0;
+}
+
 		
 bmpObj::~bmpObj(void) {  }
 

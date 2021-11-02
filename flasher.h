@@ -9,7 +9,7 @@
 
 #include <drawObj.h>
 #include <squareWave.h>
-#include <bmpPipe.h>
+#include <bmpObj.h>
 
 
 // *****************************************************
@@ -50,16 +50,16 @@ class flasher :	public drawObj,
 class bmpFlasher :  public flasher {
     
 	public:
-				bmpFlasher(int inX,int inY, int width,int height,char* onBmp, char* offBmp);
+				bmpFlasher(int inX,int inY, int width,int height,char* onBmpPath, char* offBmpPath);
 				bmpFlasher(rect* inRect,char* onBmp, char* offBmp);
 	virtual	~bmpFlasher(void);
 
-				void	setup(char* onBmp, char* offBmp);
+				void	setup(char* onBmpPath, char* offBmpPath);
 	virtual	void	drawSelf(void);
 
 				bool		mReady;
-            bmpPipe*	mOnBmp;
-            bmpPipe*	mOffBmp;     
+            bmpObj*	mOnBmp;
+            bmpObj*	mOffBmp;     
 };
 
 #endif
