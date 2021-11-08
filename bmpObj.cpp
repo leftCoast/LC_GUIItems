@@ -4,7 +4,7 @@
 // We only draw one at a time. Maybe, this is better used as a global so there is no
 // chance or multiples out there in RAM. Also it seems that it's constructor is really
 // slow!
-File		bmpFile;
+//File		bmpFile;
 
 
 // *************************************

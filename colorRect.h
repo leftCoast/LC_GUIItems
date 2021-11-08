@@ -13,6 +13,7 @@ class colorRect : public drawObj,
   public:
             colorRect(void);
             colorRect(rect* inRect,colorObj* inColor,int inset=0);
+            colorRect(int inLocX,int inLocY,int inWidth,int inHeight,colorObj* inColor,int inset=0);
             colorRect(int inLocX,int inLocY,int inWidth,int inHeight,int inset=0);
     virtual ~colorRect(void);
 

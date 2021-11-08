@@ -26,8 +26,6 @@ class iconButton :	public bmpObj {
 };
 
 
-// HAVE NOT TESTED THESE YET!!!
-
 class iconButton32 :	public iconButton {
 
 	public:

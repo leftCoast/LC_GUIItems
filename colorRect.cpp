@@ -14,7 +14,15 @@ colorRect::colorRect(rect* inRect,colorObj* inColor,int inset)
 	setColor(inColor);
 	setInset(inset);
 }
+
+
+colorRect::colorRect(int inLocX,int inLocY,int inWidth,int inHeight,colorObj* inColor,int inset=0)
+  : drawObj(inLocX,inLocY,inWidth,inHeight),colorObj() {
 	
+	setColor(inColor);
+	setInset(inset);
+}	
+
 	
 colorRect::colorRect(int inLocX, int inLocY, int inWidth,int inHeight,int inset)
   : drawObj(inLocX,inLocY,inWidth,inHeight),
