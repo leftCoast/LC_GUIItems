@@ -105,6 +105,6 @@ float slider::getValue(void) { return mPos2ValMap.Map(mLoc); }
 // Great for pre-loading.
 void slider::setValue(float value) {
 
-     mNewLoc =  mVal2PosMap.Map(value);
+     mNewLoc =  mVal2PosMap.map(value);
      setNeedRefresh();               
 }
