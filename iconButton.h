@@ -12,8 +12,11 @@
 // I'll just add some sub classes for the simple cases.
 //
 // 9/19 - Doing my own icons now. (So there's suddenly a lot of them!) I think I'll take 
-// this piece of code and twist it into a multi purpose, icon based, UI thing.
-
+// this piece of code and twist it into a multi purpose, icon based, clickable UI thing.
+//
+// 11/21 - OK. bmpObj is your "everything using a .bmp file" thing. Use that to base
+// drawing on. THIS is going back to being used for doing square icon based buttons. OK?
+// Fine!
 
 
 class iconButton :	public bmpObj {
@@ -22,24 +25,8 @@ class iconButton :	public bmpObj {
 				iconButton(int xLoc,int yLoc,char* path,int pix=32);
 	virtual	~iconButton(void);
 	
+	virtual	void	setEventSet(eventSet inEventSet);
 	virtual	void	doAction(void);
-};
-
-
-class iconButton32 :	public iconButton {
-
-	public:
-				iconButton32(int xLoc, int yLoc,char* path);
-	virtual	~iconButton32(void);
-	
-};
-
-
-class iconButton22 : public iconButton {
-
-	public:
-				iconButton22(int xLoc, int yLoc,char* path);
-	virtual	~iconButton22(void);
 };
 
 

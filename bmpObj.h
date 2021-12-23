@@ -53,13 +53,16 @@ class bmpObj :	public drawObj,
 				bmpObj(rect* inRect,char* bmpPath);
 	virtual	~bmpObj(void);
 	
-				void	setSourceOffset(int offstX,int offstY);
-				void	setMask(mask* aMaskPtr);
-	virtual	void	drawSelf(void);
+				void		setSourceOffset(int offstX,int offstY);
+				void		setMask(mask* aMaskPtr);
+	virtual	void		setGreyedOut(bool trueFalse);
+	virtual	colorObj	greyscale(colorObj* inColor);
+	virtual	void		drawSelf(void);
 				
 				int	offsetX;
 				int	offsetY;
 				mask*	mMask;
+				bool	greyOut;
 };
 
 

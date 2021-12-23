@@ -1,10 +1,5 @@
-#include "bmpObj.h"
-#include "resizeBuff.h"
-
-// We only draw one at a time. Maybe, this is better used as a global so there is no
-// chance or multiples out there in RAM. Also it seems that it's constructor is really
-// slow!
-//File		bmpFile;
+#include <bmpObj.h>
+#include <resizeBuff.h>
 
 
 // *************************************
@@ -105,6 +100,7 @@ bmpObj::bmpObj(int inX,int inY,int inWidth,int inHeight,char* bmpPath)
 	mMask		= NULL;		// No mask yet.
 	offsetX	= 0;			// No offset. Typically there will be none.
 	offsetY	= 0;
+	greyOut	= false;		// And we don't grey out unless we're told to.
 }
 
 
@@ -115,6 +111,7 @@ bmpObj::bmpObj(rect* inRect,char* bmpPath)
 	mMask		= NULL;		// No mask yet.
 	offsetX	= 0;			// No offset. Typically there will be none.
 	offsetY	= 0;
+	greyOut	= false;		// And we don't grey out unless we're told to.
 }
 
 		
@@ -124,8 +121,8 @@ bmpObj::~bmpObj(void) {  }
 // Setup the source offset for reading from the .bmp file.
 void bmpObj::setSourceOffset(int offstX,int offstY) {
 
-		offsetX = offstX;
-		offsetY = offstY;
+	offsetX = offstX;
+	offsetY = offstY;
 }
 
 
@@ -133,18 +130,31 @@ void bmpObj::setSourceOffset(int offstX,int offstY) {
 // go deleting it!
 void bmpObj::setMask(mask* aMaskPtr) { mMask = aMaskPtr; }
 
+void bmpObj::setGreyedOut(bool trueFalse) { greyOut = trueFalse; }
+
+
+colorObj bmpObj::greyscale(colorObj* inColor) {
+
+	byte		greyVal;
+	colorObj	aColor;
+	
+	greyVal = inColor->getGreyscale();
+	aColor.setColor(greyVal,greyVal,greyVal);
+	return aColor;
+}
+
 
 // Here we draw! If the file stuff is a bust.. We'll draw some default thing. 
 void	bmpObj::drawSelf(void) {
 
 	colorObj	aColor;
-	
 	if (openDocFile(FILE_READ)) {
 		if(mMask) {
 			for(int ty=0;ty<drawObj::height;ty++) {
 				for(int tx=0;tx<drawObj::width;tx++) {
 					if (mMask->checkPixel(tx,ty)) {
 						aColor = getPixel(tx+offsetX,ty+offsetY);
+						if (greyOut) aColor = greyscale(&aColor);
 						screen->drawPixel(tx+x,ty+y,&aColor);
 					} 	
 				}
@@ -153,6 +163,7 @@ void	bmpObj::drawSelf(void) {
 			for(int ty=0;ty<drawObj::height;ty++) {
 				for(int tx=0;tx<drawObj::width;tx++) {
 					aColor = getPixel(tx+offsetX,ty+offsetY);
+					if (greyOut) aColor = greyscale(&aColor);
 					screen->drawPixel(tx+x,ty+y,&aColor);	
 				}
 			}
