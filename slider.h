@@ -4,46 +4,67 @@
 #include <mapper.h>
 #include <drawObj.h>
 #include <eventMgr.h>
+#include <colorRect.h>
+
+#define DEF_SLIDER_KNOB_T		8			// Knob thickness.
+#define DEF_SLIDER_MIN			0
+#define DEF_SLIDER_MAX			100
+#define DEF_SLIDER_IVAL			50.0
+
+#define DEF_SLIDER_BCOLOR		LC_WHITE
+#define DEF_SLIDER_KNBCOLOR	LC_DARK_GREY
 
 
-#define DEF_SLIDER_KNOB_W   8
-#define DEF_SLIDER_LINE_H   3
-#define DEF_SLIDER_LVAL     0
-#define DEF_SLIDER_RVAL     100
 
-#define DEF_SLIDER_BCOLOR   LC_BLACK
-#define DEF_SLIDER_OLCOLOR  LC_GREY
-#define DEF_SLIDER_KNBCOLOR LC_RED
+// **************************************************************
+// ************************    knobObj    ***********************
+// **************************************************************
 
 
+class knobObj :	public colorRect {
 
-class slider :  public drawObj {
+	public:
+					 knobObj(int length,int thickness,int inRange,bool vertical,colorObj* bkColor);
+	virtual       ~knobObj(void);
 
-  public:
-                slider(int x,int y,int width,int height);
-  virtual       ~slider(void);
+	virtual	void	eraseSelf(void);
+				void	setPos(point* inPt);
+				float	getValue(void);
+				void	setValue(float value);
+				
+				int		range;
+				int		thickness;
+				bool		vertical; 		
+				colorObj	backColor;
+				mapper	posToVal;
+				mapper	valtoPos;
+				int		prevX;
+				int		prevY;
+};
 
-  virtual void  setup(int knobWidth,int dragLineHeight,float leftVal,float rightVal);
-  virtual void  setKnob(void);
-  virtual void  drawSelf(void);
-  virtual void  doAction(event* inEvent,point* locaPt);   //  Special for them that drag around.
-  virtual float getValue(void);                           // Just in case you were wondering.
-  virtual void  setValue(float value);                    // Great for pre-loading.
 
-          bool      mBeenReset;
-          int       mLoc;
-          int       mNewLoc;
-          bool      mInHit;
-          rect      mKnob;
-          rect      mDragLine;
-          mapper    mPos2ValMap;
-          mapper    mVal2PosMap;
-          int       mLeftLimit;
-          int       mRightLimit;
-          colorObj  mBackColor;
-          colorObj  mOutlineColor;
-          colorObj  mKnobColor;
- };
 
+// **************************************************************
+// *************************    slider    ***********************
+// **************************************************************	
+
+
+class slider :  public drawGroup {
+
+	public:
+					 slider(int x,int y,int width,int height,bool inVertical=false);
+	virtual       ~slider(void);
+	
+				float getValue(void);                           // Just in case you were wondering.
+				void  setValue(float value);							// Great for pre-loading.
+	virtual	void  drawSelf(void);
+	virtual	void  doAction(event* inEvent,point* locaPt);
+	
+				bool			vertical;
+				knobObj*		knob;
+				colorObj		backColor;
+				
+						
+};
  
 #endif
