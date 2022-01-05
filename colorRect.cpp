@@ -57,7 +57,7 @@ void colorRect::drawSelf(void) {
     for (int i=0;i<abs(mInset);i++) {
       screen->drawVLine(x+i,y+i,height-2*i,&insetTLColor);
       screen->drawHLine(x+i,y+i,width-2*i,&insetTLColor);
-      screen->drawVLine(x+width-i,y+i,height-i,&insetBRColor);
+      screen->drawVLine(x+(width-1)-i,y+i,height-i,&insetBRColor);	// I think it needs (width-1) in there.
       screen->drawHLine(x+i,y+height-i,width-i,&insetBRColor);
     }
   }

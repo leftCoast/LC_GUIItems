@@ -1,6 +1,6 @@
 #include <slider.h>
 
-#include <debug.h>
+//#include <debug.h>
 
 
 
@@ -10,7 +10,7 @@
 
 
 knobObj::knobObj(int length,int inThickness,int inRange,bool inVertical,colorObj* bkColor)
-	: colorRect(0,0,20,20,0) {
+	: colorRect(0,0,20,20,-2) {
 	
 	range			= inRange;
 	vertical		= inVertical;
