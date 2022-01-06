@@ -130,28 +130,19 @@ void slider::drawSelf(void) {
 }
 	
 	
-void slider::doAction(event* inEvent,point* locaPt) {
+void slider::doAction(event* inEvent,point* localPt) {
 
 	point offsetPt;
-	
-	offsetPt.x = locaPt->x-x;				// We want points local to ourselves. 0..width, 0..height
-	offsetPt.y = locaPt->y-y;				// So we offset them.
-	if (vertical) {							// The hardware sometimes gives really bogus values on lift.
-		if (offsetPt.y>height) return;	// So we filter them out here.
-	} else {										//
-		if (offsetPt.x>width) return;		//
-	}												// 
-	switch(inEvent->mType) {				// We have an incoming event. Check the type.
-		case touchEvent  :					// THE FINGER!  
-			knob->setPos(&offsetPt);		// Set our new position..
-		break;									// That's all we wanted to do at this point. Lets Jet!
-		case dragBegin  :						// A starting off a drag action.  
-			knob->setPos(&offsetPt);		// Set our new position..
-		break;									// That's all we wanted to do at this point. Lets Jet!
-		case dragOn     :						// Drag on event.
-			knob->setPos(&offsetPt);		// Set our new position..
-		break;									// Done here.
-		default : break;						// Shut up compiler!
+
+	switch(inEvent->mType) {			// We have an incoming event. Check the type.
+		case touchEvent	:				// THE FINGER!  
+		case dragBegin		:				// A starting off a drag action.
+		case dragOn			:				// Drag on event.
+			offsetPt.x = localPt->x-x;
+ 			offsetPt.y = localPt->y-y;
+			knob->setPos(&offsetPt);	// Set our new position..
+		break;								// Done here.
+		default : break;					// Shut up compiler!
 	}
 }
 

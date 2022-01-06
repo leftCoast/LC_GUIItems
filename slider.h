@@ -58,13 +58,11 @@ class slider :  public drawGroup {
 				float getValue(void);                           // Just in case you were wondering.
 				void  setValue(float value);							// Great for pre-loading.
 	virtual	void  drawSelf(void);
-	virtual	void  doAction(event* inEvent,point* locaPt);
+	virtual	void  doAction(event* inEvent,point* localPt);
 	
 				bool			vertical;
 				knobObj*		knob;
-				colorObj		backColor;
-				
-						
+				colorObj		backColor;				
 };
  
 #endif
