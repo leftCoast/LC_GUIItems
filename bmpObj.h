@@ -49,8 +49,8 @@ class bmpObj :	public drawObj,
 					public bmpImage {
 
 	public:
-				bmpObj(int inX,int inY,int inWidth,int inHeight,char* bmpPath);
-				bmpObj(rect* inRect,char* bmpPath);
+				bmpObj(int inX,int inY,int inWidth,int inHeight,const char* bmpPath);
+				bmpObj(rect* inRect,const char* bmpPath);
 	virtual	~bmpObj(void);
 	
 				void		setSourceOffset(int offstX,int offstY);

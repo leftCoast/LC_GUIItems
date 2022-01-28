@@ -22,7 +22,7 @@
 class iconButton :	public bmpObj {
 
 	public:
-				iconButton(int xLoc,int yLoc,char* path,int pix=32);
+				iconButton(int xLoc,int yLoc,const char* path,int pix=32);
 	virtual	~iconButton(void);
 	
 	virtual	void	setEventSet(eventSet inEventSet);

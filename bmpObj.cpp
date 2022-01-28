@@ -93,7 +93,7 @@ bool	bmpMask::readBit(int x,int y) {
 
 
 
-bmpObj::bmpObj(int inX,int inY,int inWidth,int inHeight,char* bmpPath)
+bmpObj::bmpObj(int inX,int inY,int inWidth,int inHeight,const char* bmpPath)
 	: drawObj(inX,inY,inWidth,inHeight),
 	bmpImage(bmpPath) {
 	
@@ -104,7 +104,7 @@ bmpObj::bmpObj(int inX,int inY,int inWidth,int inHeight,char* bmpPath)
 }
 
 
-bmpObj::bmpObj(rect* inRect,char* bmpPath)
+bmpObj::bmpObj(rect* inRect,const char* bmpPath)
 	: drawObj(inRect),
 	bmpImage(bmpPath) {
 	
