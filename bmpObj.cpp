@@ -1,6 +1,6 @@
 #include <bmpObj.h>
 #include <resizeBuff.h>
-
+#include "Arduino.h"
 
 // *************************************
 //     	A .bmp file mask class
