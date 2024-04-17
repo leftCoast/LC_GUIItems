@@ -18,7 +18,3 @@ void iconButton::setEventSet(eventSet inEventSet) {
 	setNeedRefresh();
 	bmpObj::setEventSet(inEventSet);
 }
-
-
-void iconButton::doAction(void) {  }
-

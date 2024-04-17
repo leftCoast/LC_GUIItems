@@ -26,7 +26,6 @@ class iconButton :	public bmpObj {
 	virtual	~iconButton(void);
 	
 	virtual	void	setEventSet(eventSet inEventSet);
-	virtual	void	doAction(void);
 };
 
 
