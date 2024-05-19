@@ -130,7 +130,13 @@ void bmpObj::setSourceOffset(int offstX,int offstY) {
 // go deleting it!
 void bmpObj::setMask(mask* aMaskPtr) { mMask = aMaskPtr; }
 
-void bmpObj::setGreyedOut(bool trueFalse) { greyOut = trueFalse; }
+void bmpObj::setGreyedOut(bool trueFalse) {
+
+	if (greyOut!=trueFalse) {
+		greyOut = trueFalse;
+		setNeedRefresh();
+	} 
+}
 
 
 colorObj bmpObj::greyscale(colorObj* inColor) {
