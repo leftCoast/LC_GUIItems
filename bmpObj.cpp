@@ -12,7 +12,7 @@ bmpMask::bmpMask(void) { maskBits = NULL; }
 bmpMask::~bmpMask(void) { if (maskBits) resizeBuff(0,&maskBits); }
 
 
-void	bmpMask::readFromBMP(char* filePath) {
+void	bmpMask::readFromBMP(const char* filePath) {
 
 	bmpImage*	alphaFile;
 	int			numBytes;

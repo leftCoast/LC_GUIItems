@@ -22,7 +22,7 @@ class bmpMask :	public mask {
 				bmpMask(void);
 	virtual	~bmpMask(void);
 	
-	virtual	void	readFromBMP(char* filePath);
+	virtual	void	readFromBMP(const char* filePath);
 	virtual	bool	checkPixel(int x,int y);
 	
 	protected:	
