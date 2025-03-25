@@ -83,3 +83,14 @@ void colorRect::setColor(colorObj* inColor) {
   colorObj::setColor(inColor);
   needRefresh = true;
 }
+
+
+void colorRect::setLocation(int inX, int inY)								{ rect::setLocation(inX,inY); setNeedRefresh(); }
+void colorRect::setSize(int inWidth,int inHeight)							{ rect::setSize(inWidth,inHeight); setNeedRefresh(); }
+void colorRect::setRect(rect* inRect)											{ rect::setRect(inRect); setNeedRefresh(); }
+void colorRect::setRect(point* inPt1,point* inPt2)							{ rect::	setRect(inPt1,inPt2); setNeedRefresh(); }			
+void colorRect::setRect(int inX, int inY, int inWidth,int inHeight)	{ rect::setRect(inX,inY,inWidth,inHeight); setNeedRefresh(); }
+void colorRect::insetRect(int inset)											{ rect::insetRect(inset); setNeedRefresh(); }
+void colorRect::addRect(rect* inRect)											{ rect::addRect(inRect); setNeedRefresh(); }
+
+
