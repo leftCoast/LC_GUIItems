@@ -9,7 +9,7 @@ colorBargraph::colorBargraph(rect* inRect,orientation inOrientation)
 	sizeMapper.setValues(0,0,0,0);
 	maxVal	= 0;
 	minVal	= 0;
-	value	= 0;
+	value		= 0;
 	empty = true;
 }
 	
@@ -63,16 +63,18 @@ void colorBargraph::setValue(float inVal) {
 		setNeedRefresh();
 	}
 }
+	
 				
+float colorBargraph::getValue(void) { return value; }
+
 
 void  colorBargraph::drawSelf(void) {
 
-	rect	drawRect(this);
 	rect	saveRect(this);
 	float mappedValue;
 	int	limit;
 	
-	screen->drawRect(this,&white);
+	drawRect.setRect(this);
 	colorObj	theColor;
 	theColor = map(value);
 	setColor(&theColor);
@@ -93,7 +95,7 @@ void  colorBargraph::drawSelf(void) {
 			drawRect.width		= drawRect.width - mappedValue;
 		break;
 	}
-	rect::setRect(&drawRect);
+	rect::setRect(&drawRect);	// Our children can use draw rect to know where we drew.
 	colorRect::drawSelf();
 	rect::setRect(&saveRect);
 	

@@ -32,6 +32,7 @@ class colorBargraph :	public colorRect,
 				void	setupMapper(void);
 	virtual	void	clearMap(void);
 				void	setValue(float inVal);
+				float getValue(void);
 	virtual	void	drawSelf(void);
 	
 	virtual	void  setLocation(int inX, int inY);
@@ -42,6 +43,7 @@ class colorBargraph :	public colorRect,
   	virtual	void	insetRect(int inset);											
    virtual	void	addRect(rect* inRect);
    
+   			rect			drawRect;
 				mapper		sizeMapper;
 				orientation	ourOrientation;
 				float			minVal;
