@@ -51,7 +51,7 @@ void colorBargraph::clearMap(void) {
 	sizeMapper.setValues(0,0,0,0);
 	maxVal	= 0;
 	minVal	= 0;
-	value	= 0;
+	value		= 0;
 	empty = true;	
 }
 
